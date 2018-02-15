@@ -14,6 +14,11 @@
 
 var functions = require('firebase-functions');
 
+exports.quarter_hourly_job =
+  functions.pubsub.topic('quarter-hourly-tick').onPublish((event) => {
+    console.log("This job is run every quarter hour!")
+  });
+
 exports.hourly_job =
   functions.pubsub.topic('hourly-tick').onPublish((event) => {
     console.log("This job is ran every hour!")
