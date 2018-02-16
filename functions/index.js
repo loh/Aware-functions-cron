@@ -14,12 +14,28 @@
 
 var functions = require('firebase-functions');
 
+// The Firebase Admin SDK to access the Firebase Realtime Database.
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
+
 exports.quarter_hourly_job =
   functions.pubsub.topic('quarter-hourly-tick').onPublish((event) => {
-    console.log("This job is run every quarter hour!")
+    const payload = {
+      'notification': {
+        'title': 'TimeCheck',
+        'body': 'quarter-hourly-tick',
+      },
+      // NOTE: The 'data' object is inside payload, not inside notification
+      'data': {
+            'featureName': 'time check'
+      }
+    };
+    return admin.messaging().sendToTopic("quarter-hourly-tick", payload);
+
+    console.log("This job and message go out every quarter hour!")
   });
 
 exports.hourly_job =
   functions.pubsub.topic('hourly-tick').onPublish((event) => {
-    console.log("This job is ran every hour!")
+    console.log("This job is run every hour!")
   });
