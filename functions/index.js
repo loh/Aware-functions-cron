@@ -21,18 +21,18 @@ admin.initializeApp(functions.config().firebase);
 exports.quarter_hourly_job =
   functions.pubsub.topic('quarter-hourly-tick').onPublish((event) => {
     const payload = {
-      'notification': {
-        'title': 'TimeCheck',
-        'body': 'quarter-hourly-tick',
-      },
-      // NOTE: The 'data' object is inside payload, not inside notification
-      'data': {
-            'featureName': 'time check'
+      data: {
+        title: 'TimeCheck',
+        body: 'Time for a check!'
       }
     };
-    return admin.messaging().sendToTopic("quarter-hourly-tick", payload);
+
+    const options = {
+      content_available: true
+    }
 
     console.log("This job and message go out every quarter hour!")
+    return admin.messaging().sendToTopic("quarter-hourly-tick", payload, options);
   });
 
 exports.hourly_job =
