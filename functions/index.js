@@ -35,6 +35,23 @@ exports.quarter_hourly_job =
     return admin.messaging().sendToTopic("quarter-hourly-tick", payload, options);
   });
 
+  exports.rapid_job =
+    functions.pubsub.topic('rapid-tick').onPublish((event) => {
+      const payload = {
+        data: {
+          title: 'TimeCheck',
+          body: 'Time for a check!'
+        }
+      };
+
+      const options = {
+        content_available: true
+      }
+
+      console.log("This is a debugging tick!")
+      return admin.messaging().sendToTopic("rapid-tick", payload, options);
+    });
+
 exports.hourly_job =
   functions.pubsub.topic('hourly-tick').onPublish((event) => {
     console.log("This job is run every hour!")
