@@ -22,8 +22,7 @@ exports.quarter_hourly_job =
   functions.pubsub.topic('quarter-hourly-tick').onPublish((event) => {
     const payload = {
       data: {
-        title: 'TimeCheck',
-        body: 'Time for a check!'
+        topic: 'quarter-hourly-tick'
       }
     };
 
@@ -35,22 +34,37 @@ exports.quarter_hourly_job =
     return admin.messaging().sendToTopic("quarter-hourly-tick", payload, options);
   });
 
-  exports.rapid_job =
-    functions.pubsub.topic('rapid-tick').onPublish((event) => {
-      const payload = {
-        data: {
-          title: 'TimeCheck',
-          body: 'Time for a check!'
-        }
-      };
-
-      const options = {
-        content_available: true
+exports.rapid_job =
+  functions.pubsub.topic('rapid-tick').onPublish((event) => {
+    const payload = {
+      data: {
+        topic: 'rapid-tick'
       }
+    };
 
-      console.log("This is a debugging tick!")
-      return admin.messaging().sendToTopic("rapid-tick", payload, options);
-    });
+    const options = {
+      content_available: true
+    }
+
+    console.log("rapid-tick")
+    return admin.messaging().sendToTopic("rapid-tick", payload, options);
+  });
+
+exports.five_minute_job =
+  functions.pubsub.topic('five-minute-tick').onPublish((event) => {
+    const payload = {
+      data: {
+        topic: 'five-minute-tick'
+      }
+    };
+
+    const options = {
+      content_available: true
+    }
+
+    console.log("five-minute-tick")
+    return admin.messaging().sendToTopic("five-minute-tick", payload, options);
+  });
 
 exports.hourly_job =
   functions.pubsub.topic('hourly-tick').onPublish((event) => {
